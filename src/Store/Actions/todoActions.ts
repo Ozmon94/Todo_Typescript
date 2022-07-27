@@ -11,8 +11,8 @@ export interface TodoTask {
   description: string;
   dataCreation: number;
   deadlineDate?: number;
-  // withHour?: boolean;
-  // projectId?: string;
+  withHour?: boolean;
+  projectId?: string;
 }
 
 interface AddTask {

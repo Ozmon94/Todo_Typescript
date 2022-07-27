@@ -7,10 +7,15 @@ import TimeInputModal from "components/molecules/TimeInputModal/TimeInputModal";
 
 interface IProps {
   setDeadlineDate: Dispatch<SetStateAction<Date>>;
+  setIsWithHour: Dispatch<SetStateAction<boolean>>;
   deadlineDate: Date;
 }
 
-const DateChoose: React.FC<IProps> = ({ setDeadlineDate, deadlineDate }) => {
+const DateChoose: React.FC<IProps> = ({
+  setDeadlineDate,
+  deadlineDate,
+  setIsWithHour,
+}) => {
   const [isTimeOpen, setIsTimeOpen] = useState<boolean>(false);
   const [isChoose, setIsChoose] = useState<boolean>(false);
 
@@ -19,6 +24,7 @@ const DateChoose: React.FC<IProps> = ({ setDeadlineDate, deadlineDate }) => {
     date.setMinutes(0);
     date.setSeconds(0);
     setDeadlineDate(date);
+    setIsWithHour(isChoose);
   };
 
   const handleChangeTime = (date: Date) => {

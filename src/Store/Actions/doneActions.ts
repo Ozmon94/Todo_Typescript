@@ -10,8 +10,8 @@ export interface DoneTask {
   description: string;
   dateDone: number;
   deadlineDate?: number;
-  // withHour?: boolean;
-  // projectId?: string;
+  withHour?: boolean;
+  projectId?: string;
 }
 
 interface AddDoneTask {

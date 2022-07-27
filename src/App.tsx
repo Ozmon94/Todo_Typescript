@@ -19,6 +19,11 @@ import {
   DoneTask,
   importDoneTasks,
 } from "Store/Actions/doneActions";
+import {
+  importProjects,
+  Project,
+  ProjectsActionTypes,
+} from "Store/Actions/projectsActions";
 
 const App: React.FC = () => {
   const database = useDatabase();
@@ -33,6 +38,10 @@ const App: React.FC = () => {
       "done",
       (tasks) => dispatch(importDoneTasks(tasks))
     );
+    // database.getAllObjects<(result: Project[]) => ProjectsActionTypes>(
+    //   "projects",
+    //   (projects) => dispatch(importProjects(projects))
+    // );
   };
 
   useEffect(() => {

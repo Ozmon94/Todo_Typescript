@@ -31,7 +31,7 @@ const AddTask: React.FC = () => {
   const [deadlineDate, setDeadlineDate] = useState<Date>(
     editState?.deadlineDate ? new Date(editState.deadlineDate) : today
   );
-  // const [isWithHour, setIsWithHour] = useState<boolean>(false);
+  const [isWithHour, setIsWithHour] = useState<boolean>(false);
   const buttonLabel = editState?.id ? "Edytuj zadanie" : "Dodaj zadanie";
 
   const handleOnClick = (e: React.MouseEvent) => {
@@ -43,8 +43,8 @@ const AddTask: React.FC = () => {
       description: taskDescription,
       dataCreation: editState?.dataCreation ?? Date.now(),
       deadlineDate: isDeadlineDate ? deadlineDate.getTime() : undefined,
-      // withHour: false,
-      // projectId: "",
+      withHour: isWithHour,
+      projectId: "",
     };
 
     if (editState?.id) {
@@ -84,6 +84,7 @@ const AddTask: React.FC = () => {
           <DateChoose
             setDeadlineDate={setDeadlineDate}
             deadlineDate={deadlineDate}
+            setIsWithHour={setIsWithHour}
           />
         )}
 

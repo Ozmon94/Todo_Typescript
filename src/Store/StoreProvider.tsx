@@ -12,7 +12,9 @@ StoreContext.displayName = "RootStore";
 export const StoreProvider: React.FC<IProps> = ({ children }) => {
   return (
     <StoreContext.Provider
-      value={new DatabaseManager("todo-list-database", ["todo", "done"])}
+      value={
+        new DatabaseManager("todo-list-database", ["todo", "done", "projects"])
+      }
     >
       {children}
     </StoreContext.Provider>
