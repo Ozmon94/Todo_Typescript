@@ -19,7 +19,7 @@ export const projectsReducer = (
     case ProjectsActions.DELETE_PROJECT:
       return state.filter((project) => project.id !== action.payload.id);
     case ProjectsActions.IMPORT_ALL_PROJECTS:
-      return state;
+      return action.payload;
     default:
       return state;
   }

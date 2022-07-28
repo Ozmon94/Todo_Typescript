@@ -47,8 +47,12 @@ const Task: React.FC<IProps> = ({ task }) => {
     dispatch(removeTodoTask(task.id));
   };
 
-  const getLeftTime = (endTime: number): string => {
-    return format(endTime, "dd MMM yyyy", { locale: pl });
+  const getLeftTime = (endTime: number, withHour?: boolean): string => {
+    if (withHour) {
+      return format(endTime, "dd MMM yyyy HH:mm", { locale: pl });
+    } else {
+      return format(endTime, "dd MMM yyyy", { locale: pl });
+    }
   };
   const doneDate = (doneDate: number): string => {
     return format(doneDate, "dd MMM yyyy", { locale: pl });
@@ -60,37 +64,22 @@ const Task: React.FC<IProps> = ({ task }) => {
       setIsLate(isBefore(task.deadlineDate, Date.now()));
     }
   }, [task.deadlineDate]);
+
   return (
     <Wrapper isDone={isDone}>
       <TitleWrapper>
-        <TaskTitle>{task.title}</TaskTitle>
-        {"dateDone" in task ? (
-          <IconButton
-            onClick={handleOnDelete}
-            icon={FaTimes}
-            position={"absolute"}
-            top={5}
-            right={5}
-          />
-        ) : (
-          <>
-            {" "}
-            <IconButton
-              onClick={handleOnEdit}
-              icon={FaPen}
-              position={"absolute"}
-              top={5}
-              right={5}
-            />
-            <IconButton
-              onClick={handleOnDone}
-              icon={FaCheck}
-              position={"absolute"}
-              top={5}
-              right={35}
-            />
-          </>
-        )}
+        <TaskTitle title={task.title}>{task.title}</TaskTitle>
+        <ButtonWrapper>
+          {"dateDone" in task ? (
+            <IconButton onClick={handleOnDelete} icon={FaTimes} />
+          ) : (
+            <>
+              {" "}
+              <IconButton onClick={handleOnEdit} icon={FaPen} />
+              <IconButton onClick={handleOnDone} icon={FaCheck} />
+            </>
+          )}
+        </ButtonWrapper>
       </TitleWrapper>
 
       <DescriptionWrapper>
@@ -101,12 +90,17 @@ const Task: React.FC<IProps> = ({ task }) => {
 
       {task?.deadlineDate && !isDone ? (
         <DeadlineDate isLate={isLate}>
-          {getLeftTime(task.deadlineDate)}
+          {getLeftTime(task.deadlineDate, task.withHour)}
         </DeadlineDate>
       ) : null}
     </Wrapper>
   );
 };
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+`;
 
 const Wrapper = styled.div<IWrapper>`
   padding: 10px;
@@ -119,16 +113,16 @@ const Wrapper = styled.div<IWrapper>`
 `;
 
 const TitleWrapper = styled.div`
-  position: relative;
-  padding: 5px 0;
+  display: flex;
+  flex-wrap: nowrap;
 `;
 
 const TaskTitle = styled.h2`
   font-size: 18px;
-  margin-right: 60px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  flex: 1;
 `;
 
 const DeadlineDate = styled.p<DeadlineParagraph>`

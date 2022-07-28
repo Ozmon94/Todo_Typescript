@@ -1,18 +1,21 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 import FormInput from "components/atoms/FormInput/FormInput";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "components/atoms/Button/Button";
 import CheckBoxInput from "components/atoms/CheckBoxInput/CheckBoxInput";
 import { v4 as uuidv4 } from "uuid";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addTodoTask, editTodoTask, TodoTask } from "Store/Actions/todoActions";
 import { useDatabase } from "hooks/useDatabase";
 
 import DateChoose from "components/molecules/DateChoose/DateChoose";
+import Select from "components/atoms/Select/Select";
+import { RootState } from "Store/Reducers";
 
 const AddTask: React.FC = () => {
   const editState = useLocation().state as Partial<TodoTask>;
+  const isEdit = !!editState?.id;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const database = useDatabase();
@@ -21,9 +24,16 @@ const AddTask: React.FC = () => {
   today.setMinutes(0);
   today.setSeconds(0);
 
+  const projects = useSelector((store: RootState) => store.projects).map(
+    (project) => ({ id: project.id, name: project.name })
+  );
+
   const [taskTitle, setTaskTitle] = useState<string>(editState?.title ?? "");
   const [taskDescription, setTaskDescription] = useState<string>(
     editState?.description ?? ""
+  );
+  const [projectId, setProjectId] = useState<string>(
+    editState?.projectId ?? ""
   );
   const [isDeadlineDate, setIsDeadlineDate] = useState<boolean>(
     !!editState?.deadlineDate
@@ -31,8 +41,8 @@ const AddTask: React.FC = () => {
   const [deadlineDate, setDeadlineDate] = useState<Date>(
     editState?.deadlineDate ? new Date(editState.deadlineDate) : today
   );
-  const [isWithHour, setIsWithHour] = useState<boolean>(false);
-  const buttonLabel = editState?.id ? "Edytuj zadanie" : "Dodaj zadanie";
+  const [isWithHour, setIsWithHour] = useState<boolean>(!!editState?.withHour);
+  const buttonLabel = isEdit ? "Edytuj zadanie" : "Dodaj zadanie";
 
   const handleOnClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -44,10 +54,10 @@ const AddTask: React.FC = () => {
       dataCreation: editState?.dataCreation ?? Date.now(),
       deadlineDate: isDeadlineDate ? deadlineDate.getTime() : undefined,
       withHour: isWithHour,
-      projectId: "",
+      projectId: projectId,
     };
 
-    if (editState?.id) {
+    if (isEdit) {
       database.editObject("todo", newTask);
       dispatch(editTodoTask(newTask));
     } else {
@@ -57,6 +67,8 @@ const AddTask: React.FC = () => {
     navigate("/");
   };
 
+  const handleChooseProject = (e: ChangeEvent<HTMLSelectElement>) =>
+    setProjectId(e.target.value);
   return (
     <Wrapper>
       <Title>Dodaj zadanie</Title>
@@ -74,12 +86,21 @@ const AddTask: React.FC = () => {
           value={taskDescription}
           isTextArea={true}
         />
+        <Select
+          label={"Wybierz projekt"}
+          id={"choose-project"}
+          value={projectId}
+          onChange={handleChooseProject}
+          options={projects}
+        />
+
         <CheckBoxInput
           id={"deadline-check"}
           label={"Dodaj date końcową"}
           value={isDeadlineDate}
           onChange={(e) => setIsDeadlineDate(e.target.checked)}
         />
+
         {isDeadlineDate && (
           <DateChoose
             setDeadlineDate={setDeadlineDate}

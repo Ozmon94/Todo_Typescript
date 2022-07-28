@@ -5,46 +5,17 @@ import { IconType } from "react-icons";
 interface IconButtonProps {
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   icon: IconType;
-  position?: "absolute" | "relative";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
 }
 
-interface ButtonProps {
-  position?: "absolute" | "relative";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-}
-
-const IconButton: React.FC<IconButtonProps> = ({
-  onClick,
-  icon,
-  position,
-  top,
-  left,
-  right,
-  bottom,
-}) => {
+const IconButton: React.FC<IconButtonProps> = ({ onClick, icon }) => {
   return (
-    <StyledIconButton
-      type="button"
-      onClick={onClick}
-      position={position}
-      top={top}
-      bottom={bottom}
-      left={left}
-      right={right}
-    >
+    <StyledIconButton type="button" onClick={onClick}>
       {React.createElement(icon)}
     </StyledIconButton>
   );
 };
 
-const StyledIconButton = styled.button<ButtonProps>`
+const StyledIconButton = styled.button`
   width: 20px;
   height: 20px;
   display: flex;
@@ -54,16 +25,6 @@ const StyledIconButton = styled.button<ButtonProps>`
   border: none;
   outline: none;
   cursor: pointer;
-
-  ${(props) => {
-    return `${props?.position ? `position: ${props.position};` : ""} ${
-      props?.top ? `top: ${props.top}px;` : ""
-    }
-    ${props?.bottom ? `bottom: ${props.bottom}px;` : ""}
-    ${props?.right ? `right: ${props.right}px;` : ""}
-    ${props?.left ? `left: ${props.left}px;` : ""}`;
-  }}
-
   &:hover {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.4), 0 0 10px rgba(0, 0, 0, 0.4);
   }

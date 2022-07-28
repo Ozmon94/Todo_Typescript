@@ -11,10 +11,16 @@ const Navigation: React.FC = () => {
             <StyledLink to="/"> Strona główna</StyledLink>
           </li>
           <li>
-            <StyledLink to="/done"> Zrobione </StyledLink>
+            <StyledLink to="/done">Zrobione</StyledLink>
+          </li>
+          <li>
+            <StyledLink to="/projects">Projekty</StyledLink>
           </li>
           <li>
             <StyledLink to="/add-task">Dodaj zadanie</StyledLink>
+          </li>
+          <li>
+            <StyledLink to="/add-project">Dodaj projekt</StyledLink>
           </li>
         </NavList>
       </Nav>

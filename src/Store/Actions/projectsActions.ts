@@ -50,7 +50,7 @@ export const editProject = (project: Project): ProjectsActionTypes => {
   };
 };
 
-export const deleteProject = (id: number | string): ProjectsActionTypes => {
+export const removeProject = (id: number | string): ProjectsActionTypes => {
   return {
     type: ProjectsActions.DELETE_PROJECT,
     payload: { id },

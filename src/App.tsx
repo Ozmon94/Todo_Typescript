@@ -24,6 +24,9 @@ import {
   Project,
   ProjectsActionTypes,
 } from "Store/Actions/projectsActions";
+import AddProjects from "Pages/AddProjects/AddProjects";
+import ProjectsList from "Pages/ProjectsList/ProjectsList";
+import { log } from "util";
 
 const App: React.FC = () => {
   const database = useDatabase();
@@ -38,10 +41,10 @@ const App: React.FC = () => {
       "done",
       (tasks) => dispatch(importDoneTasks(tasks))
     );
-    // database.getAllObjects<(result: Project[]) => ProjectsActionTypes>(
-    //   "projects",
-    //   (projects) => dispatch(importProjects(projects))
-    // );
+    database.getAllObjects<(result: Project[]) => ProjectsActionTypes>(
+      "projects",
+      (projects) => dispatch(importProjects(projects))
+    );
   };
 
   useEffect(() => {
@@ -55,7 +58,9 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/add-task" element={<AddTask />} />
+            <Route path="/add-project" element={<AddProjects />} />
             <Route path="/done" element={<Done />} />
+            <Route path="/projects" element={<ProjectsList />} />
             <Route path="/:id" element={<TaskInfo />} />
             <Route path="*" element={<Navigate to="/" replace={true} />} />
           </Routes>

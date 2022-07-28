@@ -30,6 +30,7 @@ const DateChoose: React.FC<IProps> = ({
   const handleChangeTime = (date: Date) => {
     setIsChoose(true);
     setDeadlineDate(date);
+    setIsWithHour(true);
   };
   const handleOnClose = (): void => {
     setIsTimeOpen(false);
